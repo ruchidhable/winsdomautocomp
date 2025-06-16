@@ -31,8 +31,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage, limits: { files: 10 } });
 
-// Connect to SQLite database
-const db = new sqlite3.Database('D:/winsdomAutoComp/Database/winsdomAutoComp.db', (err) => {
+// ✅ Use cloud-compatible SQLite path
+const dbPath = path.join(process.cwd(), 'winsdomAutoComp.db');
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) return console.error('Database connection error:', err.message);
   console.log('Connected to SQLite database.');
 });
@@ -83,7 +84,7 @@ app.post('/api/qadoc', upload.array('documents', 10), (req, res) => {
         return res.status(400).json({ error: 'All document slots are already filled for this part number.' });
       }
 
-      values.push(partNumber); // WHERE clause value
+      values.push(partNumber);
       const query = `UPDATE QADocuments SET ${updates.join(', ')} WHERE partNumber = ?`;
 
       db.run(query, values, function (err) {
