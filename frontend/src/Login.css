@@ -1,0 +1,104 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #13131f;
+  height: 100vh;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-box {
+  display: flex;
+  width: 750px;
+  background-color: #1e1e2f;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.branding-panel {
+  width: 50%;
+  background: linear-gradient(135deg, #00dbde, #7ed957);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.branding-panel h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin: 0;
+}
+
+.branding-panel p {
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.form-panel {
+  width: 50%;
+  background-color: #262c47;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 30px;
+}
+
+.form-panel h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  margin-bottom: 15px;
+  background-color: #f0f4ff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.input-group input {
+  border: none;
+  padding: 10px;
+  font-size: 0.95rem;
+  width: 100%;
+  outline: none;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+}
+
+.options a {
+  color: #a0c9ff;
+  text-decoration: none;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background: #00cfff;
+  border: none;
+  color: black;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-btn:hover {
+  background: #00a9d6;
+}

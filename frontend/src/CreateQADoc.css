@@ -1,0 +1,79 @@
+.create-doc-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+.create-doc-header {
+  background-color: #02387e;
+  color: white;
+  text-align: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-doc-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* Main section styling */
+.create-doc-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.create-doc-form {
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.create-doc-form label {
+  font-weight: bold;
+  color: #333;
+}
+
+.create-doc-form input[type='number'],
+.create-doc-form input[type='text'],
+.create-doc-form input[type='file'] {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}

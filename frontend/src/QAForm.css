@@ -1,0 +1,76 @@
+/* Full viewport wrapper */
+.qa-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f6fb;
+  font-family: Arial, sans-serif;
+}
+
+/* Top header */
+.qa-header {
+  background-color: #02387e;
+  padding: 1rem 2rem;
+  color: white;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.qa-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* Main content area */
+.qa-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Form group */
+.qa-input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.qa-input-group label {
+  font-weight: bold;
+}
+
+.qa-input-group input {
+  flex-grow: 1;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.qa-input-group button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background: #004aad;
+  color: white;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.create-btn {
+  background: #28a745;
+}
+
+/* Document results */
+.qa-results {
+  padding: 2rem;
+  margin: 0 -2rem; /* Negative margin to stretch outside .qa-main padding */
+  width: calc(100% + 4rem); /* Expand beyond padded container */
+  border-radius: 0;
+  min-height: 150px;
+  box-sizing: border-box;
+}
+
