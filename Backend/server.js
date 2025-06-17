@@ -6,12 +6,16 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://winsdomautocomp.vercel.app', // ✅ Allow frontend origin
+  methods: ['GET', 'POST'],
+  credentials: true,
+}));
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Create uploads directory if it doesn't exist
 const uploadDir = path.join(__dirname, 'uploads');
@@ -31,14 +35,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage, limits: { files: 10 } });
 
-// ✅ Use cloud-compatible SQLite path
+// SQLite DB
 const dbPath = path.join(process.cwd(), 'winsdomAutoComp.db');
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) return console.error('Database connection error:', err.message);
   console.log('Connected to SQLite database.');
 });
 
-// Create QADocuments table if not exists
 db.run(`CREATE TABLE IF NOT EXISTS QADocuments (
   partNumber TEXT PRIMARY KEY,
   curDate TEXT,
@@ -46,16 +49,11 @@ db.run(`CREATE TABLE IF NOT EXISTS QADocuments (
   doc6 TEXT, doc7 TEXT, doc8 TEXT, doc9 TEXT, doc10 TEXT
 )`);
 
-// Upload API endpoint
+// Upload API
 app.post('/api/qadoc', upload.array('documents', 10), (req, res) => {
   const partNumber = req.body.partNumber;
   const curDate = req.body.date;
   const files = req.files;
-
-  console.log('Received POST');
-  console.log('Part Number:', partNumber);
-  console.log('Date:', curDate);
-  console.log('Files:', files);
 
   if (!partNumber || files.length === 0) {
     return res.status(400).json({ error: 'Part number and at least one document are required.' });
@@ -67,7 +65,6 @@ app.post('/api/qadoc', upload.array('documents', 10), (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
 
     if (row) {
-      // UPDATE existing record
       let updates = [];
       let values = [];
       let docIndex = 0;
@@ -88,15 +85,11 @@ app.post('/api/qadoc', upload.array('documents', 10), (req, res) => {
       const query = `UPDATE QADocuments SET ${updates.join(', ')} WHERE partNumber = ?`;
 
       db.run(query, values, function (err) {
-        if (err) {
-          console.error('UPDATE error:', err.message);
-          return res.status(500).json({ error: err.message });
-        }
+        if (err) return res.status(500).json({ error: err.message });
         res.json({ message: 'Documents updated successfully.' });
       });
 
     } else {
-      // INSERT new record
       let docFields = Array(10).fill(null);
       docPaths.forEach((doc, index) => {
         docFields[index] = doc;
@@ -108,39 +101,32 @@ app.post('/api/qadoc', upload.array('documents', 10), (req, res) => {
 
       const values = [partNumber, curDate, ...docFields];
 
-      console.log('Attempting INSERT with:', values);
-
       db.run(insertQuery, values, function (err) {
-        if (err) {
-          console.error('INSERT error:', err.message);
-          return res.status(500).json({ error: err.message });
-        }
+        if (err) return res.status(500).json({ error: err.message });
         res.json({ message: 'Documents uploaded successfully.' });
       });
     }
   });
 });
 
+// Fetch API
 app.get('/api/qadoc/:partNumber', (req, res) => {
   const partNumber = req.params.partNumber;
 
   db.get('SELECT * FROM QADocuments WHERE partNumber = ?', [partNumber], (err, row) => {
-    if (err) {
-      console.error('DB fetch error:', err.message);
-      return res.status(500).json({ error: err.message });
-    }
+    if (err) return res.status(500).json({ error: err.message });
 
-    if (!row) {
-      return res.status(404).json({ message: 'No record found.' });
-    }
+    if (!row) return res.status(404).json({ message: 'No record found.' });
 
     const docs = [];
+    const baseUrl = req.protocol + '://' + req.get('host');
+
     for (let i = 1; i <= 10; i++) {
       const filePath = row[`doc${i}`];
       if (filePath) {
         docs.push({
           name: `Document ${i}`,
-          url: `http://localhost:5000/${filePath.replace(/\\/g, '/')}`,
+          url: `${baseUrl}/${filePath.replace(/\\/g, '/')}`,
         });
       }
     }
@@ -149,4 +135,4 @@ app.get('/api/qadoc/:partNumber', (req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

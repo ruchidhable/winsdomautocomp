@@ -31,16 +31,20 @@ function CreateQADoc() {
     });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/qadoc', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        'https://winsdomautocomp.onrender.com/api/qadoc',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       alert('Documents uploaded successfully!');
       window.close();
     } catch (err) {
       console.error('Upload error:', err);
-      alert('Error uploading documents.');
+      alert('Error uploading documents. Please check console or backend logs.');
     }
   };
 
@@ -66,7 +70,7 @@ function CreateQADoc() {
           <label>Upload Documents (Max 10)</label>
           <input
             type="file"
-            name="documents"   // ✅ this is required to match Multer's field
+            name="documents"
             multiple
             accept=".pdf,.doc,.docx,.jpg,.png"
             onChange={handleFileChange}
