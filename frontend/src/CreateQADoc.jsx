@@ -72,7 +72,7 @@ function CreateQADoc() {
             type="file"
             name="documents"
             multiple
-            accept=".pdf,.doc,.docx,.jpg,.png"
+            accept=".pdf,.doc,.docx,.jpg,.png,.xls,.xlsx"
             onChange={handleFileChange}
           />
 
